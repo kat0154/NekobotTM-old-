@@ -1,9 +1,8 @@
 const Discord = require("discord.js");
 const ms = require("ms");
-const prefixes = require('../jsons/prefixes.json');
 
 module.exports.run = async (client, message, args) => {
-const prefix = prefixes[message.guild.id].prefixes;
+const prefix = "Nb.";
   let remindtime = message.content.split(" ").slice(2,3).join(" ");
   let inn = message.content.split(" ").slice(1,2).join(" ");
   let note = message.content.split(" ").slice(3).join(" ");
