@@ -1,8 +1,7 @@
 const Discord = require("discord.js");
-const prefixes = require("../jsons/prefixes.json");
 
 module.exports.run = async (client,message) => {
-  let prefix = prefixes[message.guild.id].prefixes;
+  let prefix = "Nb.";
   let ppl = message.content.split(' ').slice(1,2).join(' ');
   if(!ppl||ppl === "help"){
     let embed = new Discord.RichEmbed()
