@@ -1,9 +1,8 @@
 const Discord = require("discord.js");
-const prefixes = require("../jsons/prefixes.json");
 const translate = require('google-translate-api');
 
 module.exports.run = async (client, message, args) => {
-	let prefix = prefixes[message.guild.id].prefixes;
+	let prefix = "Nb.";
 
 const idk = message.content.split(" ").slice(2).join(" ");
 const lang = message.content.split(" ").slice(1,2).join(" ");
