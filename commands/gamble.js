@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-let credits = require("../jsons/credits.json");
+//let credits = require("../jsons/credits.json");
 
 module.exports.run = async (client,message,args) => {
 //gamble <amount>
