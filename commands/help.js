@@ -1,9 +1,7 @@
 const Discord = require("discord.js");
-const prefixes = require("../jsons/prefixes.json");
 
 module.exports.run = async (client,message,args) => {
 	
-	const prefix = prefixes[message.guild.id].prefixes;
 const uwu = message.content.split(" ").slice(1).join(" ");
 
 if (!uwu && message.author.id !== "377271843502948354") {	
