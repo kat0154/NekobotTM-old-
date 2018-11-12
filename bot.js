@@ -229,6 +229,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
 	const serverQueue = queue.get(message.guild.id);
 	const song = {
 		id: video.id,
+		requestedby: message.author,
 		title: Util.escapeMarkdown(video.title),
 		url: `https://www.youtube.com/watch?v=${video.id}`
 	};
@@ -236,7 +237,6 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
 		const queueConstruct = {
 			textChannel: message.channel,
 			voiceChannel: voiceChannel,
-			requestedby: message.author,
 			connection: null,
 			songs: [],
 			volume: 5,
@@ -257,7 +257,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
 	} else {
 		serverQueue.songs.push(song);
 		if (playlist)return;
-		else return message.channel.send(` **${song.title}** has been added to the queue!`).then(msg => {msg.delete(30000)});
+		else return message.channel.send(`**${song.title}** has been added to the queue!`);
 	}
 	return undefined;
 }
