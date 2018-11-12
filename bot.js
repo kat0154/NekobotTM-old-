@@ -229,7 +229,6 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
 	const serverQueue = queue.get(message.guild.id);
 	const song = {
 		id: video.id,
-		requestedby: message.author,
 		title: Util.escapeMarkdown(video.title),
 		url: `https://www.youtube.com/watch?v=${video.id}`
 	};
@@ -285,7 +284,7 @@ function play(guild, song) {
 		.on('error', error => console.error(error));
 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 
-	serverQueue.textChannel.send(`Started playing: **${song.title}**\nRequested by: \`${serverQueue.songs[0].requestedby.tag}\``);
+	serverQueue.textChannel.send(`Started playing: **${song.title}**`);
 }
  
 let commandfile = client.commands.get(cmd.slice(prefix.length));
