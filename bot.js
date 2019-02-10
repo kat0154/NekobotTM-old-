@@ -270,7 +270,7 @@ function play(guild, song) {
 		return;
 	}
 
-	const dispatcher = serverQueue.connection.playStream(ytdl(song.url), { audioonly: true })
+	const dispatcher = serverQueue.connection.playStream(ytdl(song.url, { audioonly: true }))
 		.on('end', reason => {
 			if(reason == 'skip'||'stop'){
 			serverQueue.songs.shift();
