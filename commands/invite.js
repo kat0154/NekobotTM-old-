@@ -12,10 +12,11 @@ module.exports.run = async (client,message,args) => {
 	.addField("**link to my support sever:**", `[Nekobot™ official](https://discord.gg/SQFbf9q)`)
         .addField('**Partnered servers:**', `1 - [Vanish inc.](https://discord.gg/KUT87e2)`)
 	.addField("**bot list links:**", `[Discord_Bot_List/Nekobot™](https://discordbots.org/bot/389890733576028161) \n[Discord_Bots/Nekobot™](https://bots.discord.pw/bots/389890733576028161)`)
-	message.channel.send({embed: embed});
-console.log(`sent links to ${message.author.username} in ${message.guild}`);
+	message.channel.send(embed).then(msg=>msg.delete(15000));
+//console.log(`sent links to ${message.author.username} in ${message.guild}`);
 }
 
 module.exports.help = {
-    name: "invite"
+    name: "invite",
+    alias: "inv"
 }
