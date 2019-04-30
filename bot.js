@@ -287,8 +287,8 @@ function play(guild, song) {
 	serverQueue.textChannel.send(`Started playing: **${song.title}**`);
 }
  
-let commandfile = client.commands.get(cmd.slice(prefix.length));
-  let alias = client.aliases.get(cmd.slice(prefix.length));
+let commandfile = client.commands.get(cmd.slice(prefix.length).toLowerCase());
+  let alias = client.aliases.get(cmd.slice(prefix.length).toLowerCase());
   if(commandfile){
 	  commandfile.run(client,message,args);
   }
