@@ -10,7 +10,7 @@ module.exports.run = async (client,message,args) => {
 	.setTitle(`links:`)
 	.addField("**link to invite me to a server:**",`[Nekobot™/invite (admin)](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=8) || [Nekobot™/invite (mod)](https://discordapp.com/oauth2/authorize?client_id=${client.user.id}&scope=bot&permissions=1412820055)`)
 	.addField("**link to my support sever:**", `[Nekobot™ official](https://discord.gg/SQFbf9q)`)
-        .addField('**Partnered servers:**', `1 - [Vanish inc.](https://discord.gg/KUT87e2)\n2 - [Neko World](https://discord.gg/G5XRPyQ)`)
+        .addField('**Partnered servers:**', `1 - [${client.guilds.get('572556636015820800').name}](https://discord.gg/G5XRPyQ)\n2 - [${client.guilds.get('549919377865048070').name}](https://discord.gg/KUT87e2)`)
 	.addField("**bot list links:**", `[Discord_Bot_List/Nekobot™](https://discordbots.org/bot/389890733576028161) \n[Discord_Bots/Nekobot™](https://bots.discord.pw/bots/389890733576028161)`)
 	message.channel.send(embed).then(msg=>msg.delete(15000));
 //console.log(`sent links to ${message.author.username} in ${message.guild}`);
