@@ -283,7 +283,7 @@ async function play(guild, song) {
         .setColor('BLUE')
         .setAuthor('Started Playing:',client.user.avatarURL)
         .setDescription(`[${song.title}](https://www.youtube.com/watch?v=${song.id})`)
-        .addField('**Requested by:**', `<@?!${song.requestedby.id}>`)
+        .addField('**Requested by:**', `<@!?${song.requestedby.id}>`)
 	serverQueue.textChannel.send(embed).then(msg=>msg.delete(30000));
 }
  
