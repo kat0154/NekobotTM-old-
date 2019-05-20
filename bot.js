@@ -272,7 +272,7 @@ async function play(guild, song) {
                         queue.delete(guild.id);
                          return;
                         } else {
-			message.channel.send('Song ended');
+			message.channel.send('Song ended').then(msg=>msg.delete(30000));
 			serverQueue.songs.shift();
 			play(guild, serverQueue.songs[0]);
 			}
