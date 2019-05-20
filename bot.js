@@ -98,7 +98,7 @@ client.on('message', async message => {
   command = command.slice(prefix.length);
   
   
-  if (command === `play`) {
+  if (command === `play`||command === 'p') {
 		const voiceChannel = message.member.voiceChannel;
 		if (!voiceChannel) return message.channel.send('I\'m sorry but you need to be in a voice channel to play music!');
 		const permissions = voiceChannel.permissionsFor(message.client.user);
@@ -161,7 +161,7 @@ client.on('message', async message => {
 		serverQueue.connection.dispatcher.end('stop');
 		message.channel.send('Stop command has been used!');
 		return;
-	} else if (command === `np`) {
+	} else if (command === `np`||command === 'nowplaying') {
 	const parseTime = function(milliseconds) {
     var seconds = Math.floor(milliseconds/1000); milliseconds %= 1000;
     var minutes = Math.floor(seconds/60); seconds %= 60;
@@ -181,7 +181,7 @@ let elapsd = parseTime(`${serverQueue.connection.dispatcher.totalStreamTime}`);
 		.setFooter(`Elapsed time: ${elapsd}`)
 		.addField("**Now Playing:**", `[${serverQueue.songs[0].title}](https://youtube.com/watch?v=${serverQueue.songs[0].id})`)
 		message.channel.send(embed);
-	} else if (command === `queue`) {
+	} else if (command === `queue`||command === 'q') {
 		let i = -1;
 		let embed = new Discord.RichEmbed()
 		.setColor(`${message.member.displayHexColor}`)
