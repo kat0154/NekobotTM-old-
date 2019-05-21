@@ -112,6 +112,7 @@ client.on('message', async message => {
         }
   if (command === `pause`) {
 	music.pause(client,message);
+        }
   if (command === `resume`) {
 	music.resume(client,message);
         }
