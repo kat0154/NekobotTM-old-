@@ -1,11 +1,9 @@
-const { Util } = require("discord.js");
 const Discord = require('discord.js');
-const YouTube = require('simple-youtube-api');
-const ytdl = require('ytdl-core-discord');
+const music = require("./musicClient.js");
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 
-const { TOKEN, GOOGLE_API_KEY } = require('./config');
+const { TOKEN } = require('./config');
 
 const prefix = "Nb.";
 
@@ -15,13 +13,7 @@ client.aliases = new Discord.Collection();
 const DBL = require("dblapi.js");
 const dbl = new DBL(process.env.DBL_KEY, client);
 
-
-const youtube = new YouTube(GOOGLE_API_KEY);
-
-const queue = new Map();
-
 let init = async () => {
-
 const cmdFiles = await readdir("./commands/");
   console.log(`Loading a total of ${cmdFiles.length} commands.`);
   cmdFiles.forEach(f => {
@@ -38,15 +30,13 @@ client.on('warn', console.warn);
 
 client.on('error', console.error);
 
-client.on('ready', () => console.log(`Running ${client.user.username} on the following servers: \n\n${client.guilds.map(g => `${g.name} - ${g.memberCount} Members`).join(`\n`)}`));
-
-  client.on('ready', () => {
-	client.user.setActivity(`on ${client.guilds.array().length} servers with ${client.users.size} members`, { type: "PLAYING" });
-    setTimeout(game2, 30000)
+client.on('ready', () => {
+client.user.setActivity(`on ${client.guilds.array().length} servers with ${client.guilds.reduce((a,b) => a + b.memberCount, 0).toLocaleString()} members`, { type: "PLAYING" });
+  setTimeout(game2, 30000)
 });
 
 function game1() {
-    client.user.setActivity(`on ${client.guilds.array().length} servers with ${client.users.size} members`, { type: "PLAYING" });
+    client.user.setActivity(`on ${client.guilds.array().length} servers with ${client.guilds.reduce((a,b) => a + b.memberCount, 0).toLocaleString()} members`, { type: "PLAYING" });
     setTimeout(game2, 30000)
 }
 
@@ -91,201 +81,40 @@ client.on('message', async message => {
   let messageArray = message.content.split(" ");
   let cmd = messageArray[0];
   let args = messageArray.slice(1);
-  const searchString = message.content.split(" ").slice(1).join(" ");
   const url = message.content.split(" ").slice(1).join(" ");
-  const serverQueue = queue.get(message.guild.id);
+  const serverQueue = music.serverqueue(message.guild.id);
   let command = message.content.toLowerCase().split(" ")[0];
   command = command.slice(prefix.length);
   
   
   if (command === `play`||command === 'p') {
-		const voiceChannel = message.member.voiceChannel;
-		if (!voiceChannel) return message.channel.send('I\'m sorry but you need to be in a voice channel to play music!');
-		const permissions = voiceChannel.permissionsFor(message.client.user);
-		if (!permissions.has('CONNECT')) {
-			return message.channel.send('I cannot connect to your voice channel, make sure I have the proper permissions!');
-		}
-		if (!permissions.has('SPEAK')) {
-			return message.channel.send('I cannot speak in this voice channel, make sure I have the proper permissions!');
-		}
-
-		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-			const playlist = await youtube.getPlaylist(url);
-			const videos = await playlist.getVideos();
-			for (const video of Object.values(videos)) {
-				const video2 = await youtube.getVideoByID(video.id);
-				await handleVideo(video2, message, voiceChannel, true); 
-			}
-			message.channel.send(`Queued **${playlist.videos.length} songs** from Playlist: **${playlist.title}**`).then(msg=>{msg.delete(30000)});	
-		} else {
-			try {
-				var video = await youtube.getVideo(url);
-			} catch (error) {
-				try {
-					var videos = await youtube.searchVideos(searchString, 10);
-					let index = 0;
-					let bed = new Discord.RichEmbed()
-					.setTitle(`Song selection:`)
-					.setColor(`${message.member.displayHexColor}`)
-					.setDescription(`${videos.map(video2 => `**${++index} -** [${video2.title}](https://www.youtube.com/watch?v=${video2.id})`).join('\n')}`)
-					.setFooter(`Please provide a value from 1-10.`, `${message.author.avatarURL}`)
-					let m = message.channel.send(bed);
-					try {
-						var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11, {
-							maxMatches: 1,
-							time: 20000,
-							errors: ['time']
-						});
-					} catch (err) {
-						console.error(err);
-						return message.channel.send('No or invalid value entered, cancelling video selection.');
-					}
-					const videoIndex = parseInt(response.first().content);
-					var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-				} catch (err) {
-					console.error(err);
-					return message.channel.send('I could not obtain any search results.');
-				}
-			}
-			return handleVideo(video, message, voiceChannel);
-		}
-	} else if (command === `skip`) {
-		if (!message.member.voiceChannel) return message.channel.send('You are not in a voice channel!');
-		if (!serverQueue) return message.channel.send('There is nothing playing that I could skip for you.');
-		serverQueue.connection.dispatcher.end('skip');
-		message.channel.send('Skip command has been used');
-		return;
-} else if (command === `stop`) {
-		if (!message.member.voiceChannel) return message.channel.send('You are not in a voice channel!');
-		if (!serverQueue) return message.channel.send('There is nothing playing that I could stop for you');
-		serverQueue.connection.dispatcher.end('stop');
-		message.channel.send('Stop command has been used!');
-		return;
-	} else if (command === `np`||command === 'nowplaying') {
-	const parseTime = function(milliseconds) {
-    var seconds = Math.floor(milliseconds/1000); milliseconds %= 1000;
-    var minutes = Math.floor(seconds/60); seconds %= 60;
-    var hours = Math.floor(minutes/60); minutes %= 60;
-    var days = Math.floor(hours/24); hours %= 24;
-    var written = false;
-    return(days?(written=true,days+"d"):"")+(written?":":"")
-      +(hours?(written=true,hours+"h"):"")+(written?":":"")
-      +(minutes?(written=true,minutes+"m"):"")+(written?":":"")
-      +(seconds?(written=true,seconds+"s"):"")+(written?"":"");
-};
-let elapsd = parseTime(`${serverQueue.connection.dispatcher.totalStreamTime}`);
-		let embed = new Discord.RichEmbed()
-		.setColor(`${message.member.displayHexColor}`)
-		.setThumbnail(`https://i.ytimg.com/vi/${serverQueue.songs[0].id}/maxresdefault.jpg`)
-		.setTimestamp()
-		.setFooter(`Elapsed time: ${elapsd}`)
-		.addField("**Now Playing:**", `[${serverQueue.songs[0].title}](https://youtube.com/watch?v=${serverQueue.songs[0].id})`)
-		message.channel.send(embed);
-	} else if (command === `queue`||command === 'q') {
-		let i = -1;
-		let embed = new Discord.RichEmbed()
-		.setColor(`${message.member.displayHexColor}`)
-		.setFooter(`Total queue size: ${serverQueue.songs.length} songs`)
-		.addField("**Now Playing:**", `[${serverQueue.songs[0].title}](https://youtube.com/watch?v=${serverQueue.songs[0].id})`)
-		.addField('**Up Next:**', `${serverQueue.songs.map(song => `**[${++i}] -** ${song.title}`).slice(1, 6).join('\n')}`)
-		message.channel.send(embed);
-  } else if (command === `pause`) {
-		if (serverQueue && serverQueue.playing) {
-			serverQueue.playing = false;
-			serverQueue.connection.dispatcher.pause();
-			message.channel.send('I Paused the music for you');
-		} else {
-		message.channel.send('There is nothing playing.');
-		}
-	} else if (command === `resume`) {
-		if (serverQueue && !serverQueue.playing) {
-			serverQueue.playing = true;
-			serverQueue.connection.dispatcher.resume();
-			message.channel.send("i've resumed the music");
-		} else {
-		message.channel.send('There is nothing playing.');
+      music.play(client,message,url);
 	}
-}
-	
-async function handleVideo(video, message, voiceChannel, playlist = false) {
-	const serverQueue = queue.get(message.guild.id);
-	const song = {
-		id: video.id,
-                requestedby: message.author,
-		title: Util.escapeMarkdown(video.title),
-		url: `https://www.youtube.com/watch?v=${video.id}`,
-                duration: video.duration
-	};
-	if (!serverQueue) {
-		const queueConstruct = {
-			textChannel: message.channel,
-			voiceChannel: voiceChannel,
-			connection: null,
-			songs: [],
-			repeat: false,
-                        loopqueue: false,
-			playing: true
-		};
-		queue.set(message.guild.id, queueConstruct);
-
-		queueConstruct.songs.push(song);
-
-		try {
-			var connection = await voiceChannel.join();
-			queueConstruct.connection = connection;
-			play(message.guild, queueConstruct.songs[0]);
-		} catch (error) {
-			queue.delete(message.guild.id);
-			return message.channel.send(`I could not join the voice channel:\nERROR:\n${error}`).then(msg => {msg.delete(15000)});
-		}
-	} else {
-		serverQueue.songs.push(song);
-		if (playlist)return;
-		else return message.channel.send(`**${song.title}** has been added to the queue!`).then(msg=>msg.delete(20000));
+  if (command === `skip`) {
+      music.skip(client,message)
+        } 
+  if (command === `stop`) {
+      music.stop(client,message);
 	}
-	return;
-}
-
-async function play(guild, song) {
-	const serverQueue = queue.get(guild.id);
-
-	if (!song) {
-		serverQueue.voiceChannel.leave();
-		queue.delete(guild.id);
-		return;
+  if (command === `np`||command === 'nowplaying') {
+      music.nowplaying(client,message);
 	}
-        if(serverQueue.voiceChannel.members.size == 1){
-        serverQueue.textChannel.send('i was left all alone, so i emptied the queue and left vc');
-        serverQueue.voiceChannel.leave();
-        queue.delete(guild.id);
-        return;
+  if (command === `queue`||command === 'q') {
+	let i = -1;
+	let embed = new Discord.RichEmbed()
+	.setColor(`${message.member.displayHexColor}`)
+	.setFooter(`Total queue size: ${serverQueue.songs.length} songs`)
+	.addField("**Now Playing:**", `[${serverQueue.songs[0].title}](https://youtube.com/watch?v=${serverQueue.songs[0].id})`)
+	.addField('**Up Next:**', `${serverQueue.songs.map(song => `**[${++i}] -** ${song.title}`).slice(1, 6).join('\n')}`)
+	music.queue(client,message,{
+        queueMessage: embed
+         });
         }
-
-	const dispatcher = serverQueue.connection.playOpusStream(await ytdl(song.url, { audioonly: true }))
-		.on('end', reason => {
-			if(reason == 'skip'){
-			serverQueue.songs.shift();
-			play(guild, serverQueue.songs[0]);
-			}
-                        if(reason == 'stop'){
-                        serverQueue.voiceChannel.leave();
-                        queue.delete(guild.id);
-                         return;
-                        } else {
-			message.channel.send('Song ended').then(msg=>msg.delete(30000));
-			serverQueue.songs.shift();
-			play(guild, serverQueue.songs[0]);
-			}
-		})
-		.on('error', error => console.error(error));
-	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-        let embed = new Discord.RichEmbed()
-        .setColor('BLUE')
-        .setAuthor('Started Playing:',client.user.avatarURL)
-        .setDescription(`[${song.title}](https://www.youtube.com/watch?v=${song.id})`)
-        .addField('**Requested by:**', `<@${song.requestedby.id}>`)
-	serverQueue.textChannel.send(embed).then(msg=>msg.delete(30000));
-}
+  if (command === `pause`) {
+	music.pause(client,message);
+  if (command === `resume`) {
+	music.resume(client,message);
+        }
  
 let commandfile = client.commands.get(cmd.slice(prefix.length).toLowerCase());
   let alias = client.aliases.get(cmd.slice(prefix.length).toLowerCase());
