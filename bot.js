@@ -105,7 +105,7 @@ client.on('message', async message => {
 	.setColor(`${message.member.displayHexColor}`)
 	.setFooter(`Total queue size: ${serverQueue.songs.length} songs`)
 	.addField("**Now Playing:**", `[${serverQueue.songs[0].title}](https://youtube.com/watch?v=${serverQueue.songs[0].id})`)
-	.addField('**Up Next:**', `${serverQueue.songs.map(song => `**[${++i}] -** ${song.title}`).slice(1, 6).join('\n')}`)
+	.addField('**Up Next:**', `${serverQueue.songs.length > 1 ? serverQueue.songs.map(song => `**[${++i}] -** ${song.title}`).slice(1, 6).join('\n') : "Nothing"}`)
 	music.queue(client,message,{
         queueMessage: embed
          });
