@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const cfdreamingbot = require('cfdreamingbot');
 
 module.exports.run = async (client, message) => {
 let num = message.content.split(' ').slice(1).join(' ');
