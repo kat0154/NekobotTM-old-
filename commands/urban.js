@@ -64,7 +64,7 @@ if(!message.channel.nsfw)return message.channel.send('This command can only be u
 				  const newEmbed = new Discord.RichEmbed()
 					.setAuthor(`UrbanDictionary Definition`,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHj3pIh3_Ih2xh7-AKWmHVQJDH_ulKIQNmEsDkb0CLnWZWC9xs8g')
 					.setColor('#cbb723')
-					.addField(data.body.list[i].word,'\n\n————\n\n👍 ${(data.body.list[i].thumbs_up).toLocaleString()}\n👎 ${(data.body.list[i].thumbs_down)}`)
+					.addField(data.body.list[i].word,`\n\n————\n\n👍 ${(data.body.list[i].thumbs_up).toLocaleString()}\n👎 ${(data.body.list[i].thumbs_down)}`)
 					.addField(`Definition`, data.body.list[i].definition)
 					.addField(`Example`, data.body.list[i].example || 'NO EXAMPLE GIVEN')
 					.addField(`More definitions for this term`, more)
