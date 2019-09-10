@@ -49,7 +49,7 @@ if(!message.channel.nsfw)return message.channel.send('This command can only be u
 				  i += 1;
           
 				   const newEmbed = new Discord.RichEmbed()
-					.setAuthor(`UrbanDictionary Definition (${i}/${data.body.list.length})`,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHj3pIh3_Ih2xh7-AKWmHVQJDH_ulKIQNmEsDkb0CLnWZWC9xs8g')
+					.setAuthor(`UrbanDictionary Definition (${i+1}/${data.body.list.length})`,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHj3pIh3_Ih2xh7-AKWmHVQJDH_ulKIQNmEsDkb0CLnWZWC9xs8g')
 					.setColor('#cbb723')
 					.addField(data.body.list[i].word,`\n\n————\n\n👍 ${(data.body.list[i].thumbs_up).toLocaleString()}\n👎 ${(data.body.list[i].thumbs_down)}`)
 					.addField(`Definition`, data.body.list[i].definition)
@@ -62,7 +62,7 @@ if(!message.channel.nsfw)return message.channel.send('This command can only be u
 				  i -= 1;
 
 				  const newEmbed = new Discord.RichEmbed()
-					.setAuthor(`UrbanDictionary Definition (${i}/${data.body.list.length})`,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHj3pIh3_Ih2xh7-AKWmHVQJDH_ulKIQNmEsDkb0CLnWZWC9xs8g')
+					.setAuthor(`UrbanDictionary Definition (${i+1}/${data.body.list.length})`,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHj3pIh3_Ih2xh7-AKWmHVQJDH_ulKIQNmEsDkb0CLnWZWC9xs8g')
 					.setColor('#cbb723')
 					.addField(data.body.list[i].word,`\n\n————\n\n👍 ${(data.body.list[i].thumbs_up).toLocaleString()}\n👎 ${(data.body.list[i].thumbs_down)}`)
 					.addField(`Definition`, data.body.list[i].definition)
