@@ -48,7 +48,14 @@ module.exports = {
 							 .setColor('#00ff00')
 							 .setDescription("Thanks for letting me know there's a bug in my code, i actually appreciate it very much and tbh i didn't think anyone actually used this bot anymore.\nI'll get to fixing that issue as soon as i can, so dw.")
 							 .setTimestamp()
-						message.author.send(apr);
+						message.author.send(apr).catch(() => {
+							let apro = new Discord.RichEmbed()
+						     .setAuthor('Thank You',client.users.get("377271843502948354").displayAvatarURL)
+							 .setColor('#00ff00')
+							 .setDescription("Thanks for letting me know there's a bug in my code, i actually appreciate it very much and tbh i didn't think anyone actually used this bot anymore.\nI'll get to fixing that issue as soon as i can, so dw.")
+							 .setTimestamp()
+							 message.reply('I tried to dm you this, but it appears your dm\'s are closed',{apro});
+						});
                     }
 					if(r.emoji.name === '❎') {//:negative_squared_cross_mark: 
 						msg.reactions.forEach(r => {
@@ -63,7 +70,14 @@ module.exports = {
 							 .setColor('#ff0000')
 							 .setDescription("Thanks for letting me know there's a bug in my code, i actually appreciate it very much and tbh i didn't think anyone actually used this bot anymore.\nUnfortunately someone had already brought this issue to my attention and i've yet to fix it, sorry for the wait.")
 							 .setTimestamp()
-						message.author.send(den);
+						message.author.send(den).catch(() => {
+							let deni = new Discord.RichEmbed()
+						     .setAuthor('Thank You',client.users.get("377271843502948354").displayAvatarURL)
+							 .setColor('#ff0000')
+							 .setDescription("Thanks for letting me know there's a bug in my code, i actually appreciate it very much and tbh i didn't think anyone actually used this bot anymore.\nUnfortunately someone had already brought this issue to my attention and i've yet to fix it, sorry for the wait.")
+							 .setTimestamp()
+							 message.reply('I tried to dm you this, but it appears your dm\'s are closed',{deni});
+						});
                     }
 				})
 				collector.on('end', () => {
