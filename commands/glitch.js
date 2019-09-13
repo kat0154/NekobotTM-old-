@@ -12,7 +12,7 @@ module.exports = {
 		let glitch = message.content.replace( /  +/g, ' ').split(" ").slice(2).join(" ");
 		let command = client.commands.get(comd);
 		let alias = client.aliases.get(comd);
-		if(!commandfile && !alias)return message.channel.send(`oof, I couldn't find \`"${comd}"\` in my db of commands`);
+		if(!command && !alias)return message.channel.send(`oof, I couldn't find \`"${comd}"\` in my db of commands`);
 
 
 		let servr = client.guilds.get("413921975312842752");
