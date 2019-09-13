@@ -130,12 +130,14 @@ module.exports = {
 										.setColor('#ff0000')
 										.setDescription(reason)
 										.setTimestamp()
+										mg.channel.send(`I let them know the bad news`);
 										message.author.send(den).catch(() => {
 										let deni = new Discord.RichEmbed()
 										.setAuthor('Thank You',client.users.get("377271843502948354").displayAvatarURL)
 										.setColor('#ff0000')
 										.setDescription(reason)
 										.setTimestamp()
+										mg.channel.send(`I let them know the bad news`);
 										message.reply('I tried to dm you this, but it appears your dm\'s are closed',{deni});
 										});
 									})
@@ -229,12 +231,14 @@ module.exports = {
 											.setColor('#ff0000')
 											.setDescription(reason)
 											.setTimestamp()
+											mw.channel.send(`I let them know the bad news`);
 											message.author.send(den).catch(() => {
 											let deni = new Discord.RichEmbed()
 											.setAuthor('Thank You',client.users.get("377271843502948354").displayAvatarURL)
 											.setColor('#ff0000')
 											.setDescription(reason)
 											.setTimestamp()
+											mw.channel.send(`I let them know the bad news`);
 											message.reply('I tried to dm you this, but it appears your dm\'s are closed',{deni});
 											});
 										})
