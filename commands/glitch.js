@@ -23,7 +23,7 @@ module.exports = {
 		.setTitle('Bug Report:')
 		.setThumbnail(client.user.displayAvatarURL)
 		.setColor("#fff000")
-		.addField('**Command:**', `${command ? command : alias.help.name}`)
+		.addField('**Command:**', `${command ? command.help.name : alias.help.name}`)
 		.addField(`**${message.content.split(" ")[0].slice(3)}:**`, `${glitch}`)
 		.addField("**Reported by:**", `${message.author.tag}\nPing: <@${message.author.id}>\nThier ID: ${message.author.id}`)
 		.setFooter("Pending Approval...")
@@ -31,7 +31,7 @@ module.exports = {
               const reaction1 = await msg.react('✅');
 			  const reaction2 = await msg.react('❎');
 					let i = 0;
-			  const collector = msg.createReactionCollector((reaction, user) => user.id === "", {
+			  const collector = msg.createReactionCollector((reaction, user) => user.id === "377271843502948354", {
 				    time: 1000*60*60*24  //1 day
 			  });
 			  collector.on('collect', r => {
