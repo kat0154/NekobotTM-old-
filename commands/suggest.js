@@ -9,7 +9,9 @@ module.exports = {
 	run: async (client,message) => {
 		if(!message.content.includes(" | ")||message.content.replace( /  +/g, ' ').split(' ').slice(1,2).join(' ').toLowerCase()==="help")return message.channel.send("Command useage:\n```\nNb.suggest <command> | <detailed useage of command> | <what the command should do>```");
 		const s = message.content.replace( /  +/g, ' ').split(' ').slice(1).join(' ').split(" | ");
-
+		if(!s[1])return message.channel.send("I need an example useage of the command for the suggestion");
+		if(!s[2])return message.channel.send("I need a description on what the command should do\n`..suggest help` for command useage")
+		
 		const servr = client.guilds.get("413921975312842752");
 		const suggestionchl = servr.channels.get("622040167045267466");
 		
