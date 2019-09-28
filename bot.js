@@ -3,22 +3,14 @@ const api = require("nekos-moosik");
 const config = require('./config.js');
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
-const express = require('express')
-const app = express();
 const prefix = "Nb.";
-
-const listener = app.listen(process.env.PORT, function() {
-  setInterval(() => {
-    return;
-  }, 225000);
-});
 
 const client = new Discord.Client();
 client.music = new api.musicClient(config.GOOGLE_API_KEY);
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 const DBL = require("dblapi.js");
-const dbl = new DBL(process.env.DBL_KEY, { statsInterval: 900000, webhookAuth: 'O.o-am-rip', webhookPort: process.env.PORT, webhookServer: listener }, client);
+const dbl = new DBL(process.env.DBL_KEY, { webhookAuth: 'O.o-am-rip', webhookPort: process.env.PORT }, client);
 
 let init = async () => {
 const cmdFiles = await readdir("./commands/");
