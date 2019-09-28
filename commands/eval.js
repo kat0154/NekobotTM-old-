@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const music = require("../musicClient.js");
 const fs = require('fs');
 const moment = require("moment");
 const parse = require("parse-duration");
