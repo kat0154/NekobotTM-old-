@@ -34,7 +34,7 @@
     "node-fetch": "^2.2.0",
     "moment-duration-format": "^2.2.2",
     "node-opus":"^0.3.2",
-    "color-convert": "^2.0.1"
-    "express": "^4.16.4",
+    "color-convert": "^2.0.1",
+    "express": "^4.16.4"
   }
 }
