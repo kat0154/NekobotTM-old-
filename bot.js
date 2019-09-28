@@ -18,7 +18,7 @@ client.music = new api.musicClient(config.GOOGLE_API_KEY);
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 const DBL = require("dblapi.js");
-const dbl = new DBL(process.env.DBL_KEY, { statsInterval: 900000, webhookAuth: 'O.o-am-rip', webhookServer: listener }, client);
+const dbl = new DBL(process.env.DBL_KEY, { statsInterval: 900000, webhookAuth: 'O.o-am-rip', webhookPort: process.env.PORT, webhookServer: listener }, client);
 
 let init = async () => {
 const cmdFiles = await readdir("./commands/");
