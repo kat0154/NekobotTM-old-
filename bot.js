@@ -1,10 +1,12 @@
 const Discord = require('discord.js');
+const api = require("nekos-moosik");
 const config = require('./config.js');
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const prefix = "Nb.";
 
 const client = new Discord.Client();
+client.music = new api.musicClient(config.GOOGLE_API_KEY);
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 const DBL = require("dblapi.js");
@@ -105,22 +107,22 @@ client.on('message', async message => {
   let cmd = messageArray[0];
   let args = messageArray.slice(1);
   const url = message.content.split(" ").slice(1).join(" ");
-  const serverQueue = music.serverqueue(message.guild.id);
+  const serverQueue = client.music.serverqueue(message.guild.id);
   let command = message.content.toLowerCase().split(" ")[0];
   command = command.slice(prefix.length);
   
   
   if (command === `play`||command === 'p') {
-      music.play(client,message,url);
+      client.music.play(client,message,url);
 	}
   if (command === `skip`) {
-      music.skip(client,message)
+      client.music.skip(client,message)
         } 
   if (command === `stop`) {
-      music.stop(client,message);
+      client.music.stop(client,message);
 	}
   if (command === `np`||command === 'nowplaying') {
-      music.nowplaying(client,message);
+      client.music.nowplaying(client,message);
 	}
   if (command === `queue`||command === 'q') {
 	let i = -1;
@@ -129,15 +131,15 @@ client.on('message', async message => {
 	.setFooter(`Total queue size: ${serverQueue.songs.length} songs`)
 	.addField("**Now Playing:**", `[${serverQueue.songs[0].title}](https://youtube.com/watch?v=${serverQueue.songs[0].id})`)
 	.addField('**Up Next:**', `${serverQueue.songs.length > 1 ? serverQueue.songs.map(song => `**[${++i}] -** ${song.title}`).slice(1, 6).join('\n') : "Nothing"}`)
-	music.queue(client,message,{
+	client.music.queue(client,message,{
         queueMessage: embed
          });
         }
   if (command === `pause`) {
-	music.pause(client,message);
+	client.music.pause(client,message);
         }
   if (command === `resume`) {
-	music.resume(client,message);
+	client.music.resume(client,message);
         }
  
 let commandfile = client.commands.get(cmd.slice(prefix.length).toLowerCase());
