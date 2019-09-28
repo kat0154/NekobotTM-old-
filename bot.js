@@ -64,6 +64,32 @@ setInterval(() => {
   }, 3600000);
 });
 
+//vote stuffs
+dbl.webhook.on('ready', hook => {
+    console.log(`Webhook running at http://${hook.hostname}:${hook.port}${hook.path}`);
+  });
+  
+  dbl.webhook.on('vote', vote => {
+    console.log(`Vote Received`);
+    	let voteEmbed = new Discord.RichEmbed()
+	.setTitle('Vote Received')
+	.setColor('#00ffff')
+	.setTimestamp()
+	.setDescription(`<@${vote.user}> just voted for ${client.user.username}`)
+    	client.channels.get(`627585968634855425`).send(voteEmbed);
+    	client.fetchUser(vote.user).then((user) => {
+    		let embed = new Discord.RichEmbed()
+		.setTitle('Thanks for voting')
+		.setColor('#00ffff')
+		.setDescription('`I appreciate your support with this project, thank you`')
+      		user.send(embed).catch(() => {
+			//closed dms
+			return;
+		});
+	});
+        return;
+  });
+
 client.on('disconnect', () => console.log('I just disconnected, making sure you know, I will reconnect now...'));
 
 client.on('reconnecting', () => console.log('I am reconnecting now!'));
