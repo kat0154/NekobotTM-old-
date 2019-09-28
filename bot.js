@@ -1,10 +1,7 @@
 const Discord = require('discord.js');
-const music = require("./musicClient.js");
+const config = require('./config.js');
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
-
-const { TOKEN } = require('./config');
-
 const prefix = "Nb.";
 
 const client = new Discord.Client();
@@ -153,4 +150,4 @@ let commandfile = client.commands.get(cmd.slice(prefix.length).toLowerCase());
   }
 });
 
-client.login(TOKEN);
+client.login(config.TOKEN);
