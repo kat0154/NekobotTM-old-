@@ -30,7 +30,7 @@ module.exports = {
 		const c = new Date(client.user.createdAt);
 		const date = c.toLocaleString().split('/');
 		const listeners = function(){
-			const i = 0;
+			let i = 0;
 			client.voice.connections.forEach(c => {
 				c.channel.members.forEach(m => {
 					if(!m.user.bot){
