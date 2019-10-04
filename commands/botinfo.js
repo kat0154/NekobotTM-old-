@@ -10,37 +10,62 @@ const parseTime = function(milliseconds) {
       +(minutes?(written=true,minutes+"M"):"")+(written?", ":"")
       +(seconds?(written=true,seconds+"S"):"")+(written?" ":"");
 };
-module.exports.run = async (client,message,args) => {
-  var kitty = client.users.get("377271843502948354");
-  let uses = client.users.filter(u=>u.bot===false).size;
-  let bots = client.users.filter(u=>u.bot===true).size;
-  let createdAtRaw = client.user.createdAt.toDateString();
-  let createdAt = createdAtRaw.split(" ");
 
-  let embed = new Discord.RichEmbed()
-  .setAuthor(`Bot Info for ${client.user.username}:`, `${client.user.avatarURL}`)
-  .setColor(`${message.member.displayHexColor}`)
-  .setThumbnail(`${client.user.avatarURL}`)
-  .setTimestamp()
-  .addField('**Bot name:**', `\`\`\`css\n${message.guild.members.find('id', client.user.id).displayName}\`\`\``, true)
-  .addField('**Creator:**', `\`\`\`css\n${kitty.username}#${kitty.discriminator}\`\`\``, true)
-  .addField('**Node.js:**', `\`\`\`css\n${process.version}\`\`\``, true)
-  .addField('**Discord.js:**', `\`\`\`css\nv${Discord.version}\`\`\``, true)
-  .addField('**Useage:**', `\`\`\`css\n${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\`\`\``, true)
-  .addField('**Uptime:**', `\`\`\`css\n${parseTime(client.uptime)}\`\`\``, true)
-  .addField('**Servers:**', `\`\`\`css\n${client.guilds.size}\`\`\``, true)
-  .addField('**Channels:**', `\`\`\`css\n${client.channels.size}\`\`\``, true)
-  .addField('**Members:**', `\`\`\`css\n${uses}\`\`\``, true)
-  .addField('**Bots:**', `\`\`\`css\n${bots}\`\`\``, true)
-  .setDescription(`\`\`\`${client.user.tag} was Created on ${createdAt[1]}-${createdAt[2]}-${createdAt[3]}\`\`\``)
-  .setFooter(`Requested by: ${message.member.displayName}`, `${message.author.avatarURL}`)
-  message.channel.send(embed);
-}
+module.exports = {
+	pah: '../../commands/Information/botinfo.js',
+	help: {
+		name: 'botinfo',
+		aliases: ['binfo'],
+		enabled: true,
+		guildOnly: true,
+		permLevel: 0,
+		description: 'Returns the bots info',
+		useage: 'botinfo'
+	},
+	run: async (client,message) => {
+		let neko = client.users.get("377271843502948354");
+		let uses = client.users.filter(u=>u.bot===false).size;
+		let bots = client.users.filter(u=>u.bot===true).size;
+  
+		const c = new Date(client.user.createdAt);
+		const date = c.split(' ');
+		const listeners = function(){
+			const i = 0;
+			client.voice.connections.forEach(c => {
+				c.channel.members.forEach(m => {
+					if(!m.user.bot){
+						++i
+					}
+				})
+			});
+			return i;
+		}
 
-module.exports.help = {
-  name: "botinfo",
-  type: "Info",
-  info: "Sends the info about the bot",
-  perms: "MEMBER / none",
-  useage: ""
+		let embed = new Discord.RichEmbed()
+		.setAuthor(`Bot Info for ${client.user.username}:`, `${client.user.avatarURL}`)
+		.setColor(`${message.member.displayHexColor === "#000000" ? "#00ffff" : message.member.displayHexColor}`)
+		.setThumbnail(`${client.user.avatarURL}`)
+		.setTimestamp()
+		.addField('**Bot name:**', `\`\`\`css\n${message.guild.members.get(client.user.id).displayName}\`\`\``, true)
+		.addField('**Creator:**', `\`\`\`css\n${neko.username}#${neko.discriminator}\`\`\``, true)
+		.addField('**Node.js:**', `\`\`\`css\n${process.version}\`\`\``, true)
+		.addField('**Discord.js:**', `\`\`\`css\nv${Discord.version}\`\`\``, true)
+		.addField('**Useage:**', `\`\`\`css\n${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB\`\`\``, true)
+		.addField('**Uptime:**', `\`\`\`css\n${parseTime(client.uptime)}\`\`\``, true)
+		.addField('**Servers:**', `\`\`\`css\n${client.guilds.size}\`\`\``, true)
+		.addField('**Channels:**', `\`\`\`css\n${client.channels.size}\`\`\``, true)
+		.addField('**Members:**', `\`\`\`css\n${uses}\`\`\``, true)
+		.addField('**Bots:**', `\`\`\`css\n${bots}\`\`\``, true)
+		.setDescription(`\`\`\`${client.user.tag} was Created on ${c[1]}-${c[2]}-${c[3]}\`\`\``)
+		.setFooter(`Requested by: ${message.member.displayName}`, `${message.author.avatarURL}`);
+		if(client.voice.connections.size === 0){
+			embed.addField('**Connections:**', `\`\`\`css\n0\`\`\``, true)
+			embed.addField('**Listeners:**', `\`\`\`css\n0\`\`\``, true)
+		}
+		if(client.voice.connections.size > 0){
+			embed.addField('**Connections:**', `\`\`\`css\n${client.voice.connections.size}\`\`\``, true)
+			embed.addField('**Listeners:**', `\`\`\`css\n${listeners()}\`\`\``, true)
+		}
+		message.channel.send(embed);
+	}
 }
