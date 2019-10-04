@@ -28,7 +28,7 @@ module.exports = {
 		let bots = client.users.filter(u=>u.bot===true).size;
   
 		const c = new Date(client.user.createdAt);
-		const date = c.split(' ');
+		const date = c.toLocaleString().split('/');
 		const listeners = function(){
 			const i = 0;
 			client.voice.connections.forEach(c => {
@@ -56,11 +56,10 @@ module.exports = {
 		.addField('**Channels:**', `\`\`\`css\n${client.channels.size}\`\`\``, true)
 		.addField('**Members:**', `\`\`\`css\n${uses}\`\`\``, true)
 		.addField('**Bots:**', `\`\`\`css\n${bots}\`\`\``, true)
-		.setDescription(`\`\`\`${client.user.tag} was Created on ${c[1]}-${c[2]}-${c[3]}\`\`\``)
+		.setDescription(`\`\`\`${client.user.tag} was Created on ${date[0]}-${date[1]}-${date[2].split(', ')[0]}\`\`\``)
 		.setFooter(`Requested by: ${message.member.displayName}`, `${message.author.avatarURL}`);
 		if(client.voice.connections.size === 0){
-			embed.addField('**Connections:**', `\`\`\`css\n0\`\`\``, true)
-			embed.addField('**Listeners:**', `\`\`\`css\n0\`\`\``, true)
+			
 		}
 		if(client.voice.connections.size > 0){
 			embed.addField('**Connections:**', `\`\`\`css\n${client.voice.connections.size}\`\`\``, true)
