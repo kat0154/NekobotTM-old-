@@ -12,10 +12,10 @@ const parseTime = function(milliseconds) {
 };
 
 module.exports = {
-	pah: '../../commands/Information/botinfo.js',
+	path: '../../commands/botinfo.js',
 	help: {
 		name: 'botinfo',
-		aliases: ['binfo'],
+		alias: 'binfo',
 		enabled: true,
 		guildOnly: true,
 		permLevel: 0,
