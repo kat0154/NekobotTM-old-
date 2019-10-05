@@ -14,7 +14,7 @@ module.exports = {
 	},
 	run: async (client,message) => {
 		    let name = message.content.replace( /  +/g, ' ').split(" ").slice(1).join(" ");
-		    let mem = message.mentions.members.first()||message.guild.members.get(name)||message.guild.members.find(m => m.displayName.toLowerCase().includes(name.toLowerCase()))||message.member;
+		    let mem = message.mentions.members.first()||message.guild.members.get(name)||message.member||message.guild.members.find(m => m.displayName.toLowerCase().includes(name.toLowerCase()));
 			
 				var embed = new Discord.RichEmbed()
 				.setColor(`${mem.displayHexColor == '#000000' ? '#00ffff' : mem.displayHexColor}`)
