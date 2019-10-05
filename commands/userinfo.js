@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const moment = require('moment');
 
 module.exports = {
-	path: '../../commands/userinfo.js',
+	path: '../../commands/information/userinfo.js',
 	help: {
 		name: 'userinfo',
 		alias: 'ui',
@@ -14,9 +14,8 @@ module.exports = {
 	},
 	run: async (client,message) => {
 		    let name = message.content.replace( /  +/g, ' ').split(" ").slice(1).join(" ");
-		    let mem = message.mentions.members.first()||message.guild.members.get(name)||message.member||message.guild.members.find(m => m.displayName.toLowerCase().includes(name.toLowerCase()));
-			
-				var embed = new Discord.RichEmbed()
+			let mem = message.mentions.members.first()||message.guild.members.get(name)||message.guild.members.filter(m => m.displayName.toLowerCase().includes(name.toLowerCase())).first()||message.member;
+			var embed = new Discord.RichEmbed()
 				.setColor(`${mem.displayHexColor == '#000000' ? '#00ffff' : mem.displayHexColor}`)
 				.setTimestamp()
 				.setThumbnail(`${mem.user.avatarURL}`)
