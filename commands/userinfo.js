@@ -31,7 +31,5 @@ module.exports = {
 				.addField(`**Roles:**`, `${mem.roles.map(r => r).slice(1,16).join(' | ')}`)
 				.setFooter(`Requested by: ${message.member.displayName}`, `${message.author.avatarURL}`)
 				message.channel.send(embed);
-			
-			}
 	}
 }
