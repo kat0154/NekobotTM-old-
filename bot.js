@@ -10,7 +10,7 @@ client.music = new api.musicClient(config.GOOGLE_API_KEY);
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 const DBL = require("dblapi.js");
-const dbl = new DBL(process.env.DBL_KEY, { webhookAuth: 'O.o-am-rip', webhookPort: process.env.PORT }, client);
+client.dbl = new DBL(process.env.DBL_KEY, { webhookAuth: 'O.o-am-rip', webhookPort: 3000 }, client);
 
 let init = async () => {
 const cmdFiles = await readdir("./commands/");
@@ -59,7 +59,7 @@ function game5() {
 
 client.on('ready', () => {
 setInterval(() => {
-    dbl.postStats(client.guilds.size)
+    client.dbl.postStats(client.guilds.size)
   }, 3600000);
 });
 
