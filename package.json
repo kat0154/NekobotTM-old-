@@ -8,8 +8,8 @@
     "start": "node bot.js"
   },
 "engines":{
-  "node":"12.8.0",
-  "npm":"6.11.3"
+  "node":"10.16.0",
+  "npm":"6.10.2"
 },
   "author": "nekoboytm",
   "license": "ISC",
