@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node bot.js"
   },
+"engines":{
+  "node":"8x"
+},
   "author": "nekoboytm",
   "license": "ISC",
   "dependencies": {
@@ -14,7 +17,6 @@
     "discord.js": "^11.4.2",
     "fs": "^0.0.2",
     "nekos-moosik": "^11.3.12",
-    "giphy-api": "^1.2.7",
     "google-it": "^1.1.2",
     "google-translate-api": "^2.3.0",
     "kitsu": "^6.1.0",
@@ -23,7 +25,6 @@
     "random-puppy": "^1.1.0",
     "request": "^2.87.0",
     "snekfetch": "^4.0.4",
-    "sqlite": "^2.9.2",
     "superagent": "^3.8.3",
     "weather-js": "^2.0.0",
     "http": "^0.0.0",
