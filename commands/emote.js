@@ -15,7 +15,7 @@ module.exports.run = async (client, message) => {
 			if(!em)return message.channel.send("I couldn't find any emojis with that name/id");
 			let emote = em.url;
 			let embed = new discord.RichEmbed()
-			.setTitle(em.name)
+			.setTitle(`${em.name}.${emote.includes('.gif') ? 'gif' : 'png'}`)
 			.setColor('#00ffff')
 			.setImage(emote)
 			message.channel.send(embed);
