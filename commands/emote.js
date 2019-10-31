@@ -1,6 +1,6 @@
 let discord = require('discord.js');
 
-module.exports.help: {
+module.exports.help = {
 		name: 'emoji',
 		alias: 'emote',
 		description: 'searches for an emoji in the clients emoji db',
