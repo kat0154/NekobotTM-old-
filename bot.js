@@ -23,6 +23,16 @@ const cmdFiles = await readdir("./commands/");
   });
   console.log(`loaded ${client.commands.size} commands and ${client.aliases.size} aliases`);
 }
+function generateKey(length) {
+    const tokens = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz123456789._-=+';
+    let keyOut = '';
+    for (let i = 0; i < length; i++) {
+	const random = Math.floor((Math.random() * 65) + 1);
+	const char = tokens.charAt(random);
+	keyOut += char;
+    }
+    return keyOut;
+}
 init();
 
 client.on('warn', console.warn);
@@ -68,6 +78,56 @@ client.on('disconnect', () => console.log('I just disconnected, making sure you 
 client.on('reconnecting', () => console.log('I am reconnecting now!'));
 
 client.on('resume', () => console.log('I have reconnected!'));
+
+client.on('guildMemberAdd', async member => {
+	if(member.guild.id === "413921975312842752"){
+		const verChannel = client.channels.get('641185570676015114');
+		const channel = client.channels.get('413921975312842756');
+		const role = member.guild.roles.get('459994150796918785');
+		const betaRole = member.guild.roles.get('506279846251462675');
+		const code = generateKey(6);
+			await verChannel.send('<@'+ member.user.id +'> Please enter the following code to enter the server...\n```'+ code +'```').then(async m => {
+			const collected = await verChannel.awaitMessages(m => m.author === member.user && m.content == code, {
+				max: 1,
+				time: 1000*60*10,//10 minutes
+				errors: ['time']
+			})
+			.then((collected) => {
+				collected.first().delete(1000).then(() => {
+					m.delete(1000);
+				})
+				member.addRole(role.id).then(() => {
+					channel.send(`<@${member.user.id}> would you like to be a beta tester?`).then(async msg => {
+						const reaction1 = await msg.react('✅');//yes
+						const reaction2 = await msg.react('❎');//no
+						const collector = msg.createReactionCollector((reaction, user) => user.id === member.user.id, {
+								time: 1000*60*10  //10 minutes
+						});
+						collector.on('collect', r => {
+					      if (r.emoji.name === '✅'){//:white_check_mark:
+						      msg.delete(1000).then(() => {
+									member.addRole(betaRole.id);
+							        channel.send('Nice, you should be able to see the beta channels now ... oh, and thanks for joining ^~^').then(a => a.delete(10000));
+						      })
+						  }
+					      if(r.emoji.name === '❎') {//:negative_squared_cross_mark:
+						      msg.delete(1000).then(() => {
+									channel.send('Ok, thanks for joining tho').then(a => a.delete(10000));
+						      })
+						  }
+						})
+						collector.on('end', () => {
+					      msg.delete(1000);
+						}); 
+					});
+				})
+			})
+			.catch(err => {
+				m.edit('[Message Time-Out]\n<@377271843502948354> The message has timed out, pls let <@${member.user.id}> into the server');
+			});
+			})
+		}
+    })
 
 client.on('message', async message => { 
 	if(message.author.bot)return;
