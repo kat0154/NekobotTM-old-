@@ -123,7 +123,7 @@ client.on('guildMemberAdd', async member => {
 				})
 			})
 			.catch(err => {
-				m.edit('[Message Time-Out]\n<@377271843502948354> The message has timed out, pls let <@${member.user.id}> into the server');
+				m.edit(`[Message Time-Out]\n<@377271843502948354> The message has timed out, pls let <@${member.user.id}> into the server`);
 			});
 			})
 		}
