@@ -22,21 +22,21 @@ module.exports = {
 			} 
                         var gameName;
                         var game;
-                        if(mem.presence.game == null){
+                        if(mem.user.presence.game == null){
                            game = "Nothing";
                            gameName = "Playing";
                         }
-                        if(mem.presence.game.name == "Spotify"){
-                           game = `**${mem.presence.game.details}**\nby ${mem.presence.game.state}\non ${mem.presence.game.assets.largeText}`;
+                        if(mem.user.presence.game.name == "Spotify"){
+                           game = `**${mem.user.presence.game.details}**\nby ${mem.user.presence.game.state}\non ${mem.user.presence.game.assets.largeText}`;
                            gameName = "listening to Spotify";
                         }
-                        if(mem.presence.game.name == "Custom Status"){
-                           game = `${mem.presence.game.state}`;
+                        if(mem.user.presence.game.name == "Custom Status"){
+                           game = `${mem.user.presence.game.state}`;
                            gameName = "Custom Status";
                         }
-                        if(mem.presence.game !== null&&mem.presence.game.name !== "Spotify"&&mem.presence.game.name !== "Custom Status"){
-                           game = `${mem.presence.game.details}\n${mem.presence.game.state}`;
-                           gameName = `Playing ${mem.presence.game.name}`;
+                        if(mem.user.presence.game !== null&&mem.user.presence.game.name !== "Spotify"&&mem.user.presence.game.name !== "Custom Status"){
+                           game = `${mem.user.presence.game.details}\n${mem.user.presence.game.state}`;
+                           gameName = `Playing ${mem.user.presence.game.name}`;
                         }
 			var embed = new Discord.RichEmbed()
 				.setColor(`${mem.displayHexColor == '#000000' ? '#00ffff' : mem.displayHexColor}`)
