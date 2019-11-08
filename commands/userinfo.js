@@ -20,6 +20,24 @@ module.exports = {
 			} else {
 				mem = message.mentions.members.first()||message.guild.members.get(name)||message.guild.members.filter(m => m.displayName.toLowerCase().includes(name.toLowerCase())).first()||message.member;
 			} 
+                        var gameName;
+                        var game;
+                        if(mem.presence.game == null){
+                           game = "Nothing";
+                           gameName = "Playing";
+                        }
+                        if(mem.presence.game.name == "Spotify"){
+                           game = `**${mem.presence.game.details}**\nby ${mem.presence.game.state}\non ${mem.presence.game.assets.largeText}`;
+                           gameName = "listening to Spotify";
+                        }
+                        if(mem.presence.game.name == "Custom Status"){
+                           game = `${mem.presence.game.state}`;
+                           gameName = "Custom Status";
+                        }
+                        if(mem.presence.game !== null&&mem.presence.game.name !== "Spotify"&&mem.presence.game.name !== "Custom Status"){
+                           game = `${mem.presence.game.details}\n${mem.presence.game.state}`;
+                           gameName = `Playing ${mem.presence.game.name}`;
+                        }
 			var embed = new Discord.RichEmbed()
 				.setColor(`${mem.displayHexColor == '#000000' ? '#00ffff' : mem.displayHexColor}`)
 				.setTimestamp()
@@ -27,6 +45,7 @@ module.exports = {
 				.setAuthor(`Info on: ${mem.user.tag}`, mem.user.displayAvatarURL)
 				.addField(`**ID:**`, `${mem.user.id}`)
 				.addField(`**Status:**`, `${mem.presence.status}`)
+                                .addField(`**${gameName}**`,game)
 				.addField(`**Created:**`, `${moment(mem.user.createdAt).format('MMMM Do YYYY, h:mm a')}`)
 				.addField(`**Joined:**`, `${moment(mem.joinedAt).format('MMMM Do YYYY, h:mm a')}`)
 				.addField(`**Highest role:**`, `${mem.highestRole ? mem.highestRole.name : '@everyone'}`)
