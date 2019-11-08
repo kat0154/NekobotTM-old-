@@ -26,11 +26,11 @@ module.exports = {
                            game = "Nothing";
                            gameName = "Playing";
                         }
-                        if(mem.user.presence.game.name == "Spotify"){
+                        if(mem.user.presence.game !== null && mem.user.presence.game.name == "Spotify"){
                            game = `**${mem.user.presence.game.details}**\nby ${mem.user.presence.game.state}\non ${mem.user.presence.game.assets.largeText}`;
                            gameName = "listening to Spotify";
                         }
-                        if(mem.user.presence.game.name == "Custom Status"){
+                        if(mem.user.presence.game !== null && mem.user.presence.game.name == "Custom Status"){
                            game = `${mem.user.presence.game.state}`;
                            gameName = "Custom Status";
                         }
