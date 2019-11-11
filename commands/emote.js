@@ -10,12 +10,12 @@ module.exports.run = async (client, message) => {
 		let search = message.content.replace( /  +/g, ' ').split(" ").slice(1).join(" ");
 		if (!search)return message.channel.send("Please enter an emoji to search for");
 		if(search){
-			if(search.includes('<'))search = search.split(':')[1].split(':')[0];
+			if(search.includes('<'))search = search.split(':')[2].split('>')[0];
 			let em = client.emojis.find(e => e.name == search)||client.emojis.get(search);
 			if(!em)return message.channel.send("I couldn't find any emojis with that name/id");
 			let emote = em.url;
 			let embed = new discord.RichEmbed()
-			.setTitle(`${em.name}.${emote.includes('.gif') ? 'gif' : 'png'}`)
+			.setTitle(`${em.name}.${emote.includes('.gif') ? "gif" : emote.includes(".png") ? "png" : "jpeg"}`)
 			.setColor('#00ffff')
 			.setImage(emote)
 			message.channel.send(embed);
